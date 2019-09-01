@@ -1,13 +1,16 @@
 import random
 import tkinter as tk
 from tkinter import *
-
+import tkinter.messagebox
+import time
+import os
 from PIL import Image
 from PIL import ImageTk
 
 game_level = 1
 word = None
 letters = []
+remain_letters = 1
 
 
 def easygame():
@@ -25,6 +28,7 @@ def hardgame():
 def paint_hangman(game_level, main):
     global photoImg
     global word
+
     width = 200
     height = 400
     address = r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\\" + str(game_level) + ".png"
@@ -67,7 +71,6 @@ def paint_hangman(game_level, main):
 
 
 def game(range):
-    # global game_level
     # game_level = 1
     easywords = ["red", "blue", "orange", "white", "black", "yellow", "green", "purple", "book", "pencil", "hello",
                  "tree"]
@@ -89,6 +92,7 @@ def game(range):
     print(word, range)
 
     rangepage.destroy()
+    print("hellllo")
     main = Tk()
 
     C = Canvas(main, bg="blue", height=800, width=1360)
@@ -118,11 +122,57 @@ def game(range):
     main.mainloop()
 
 
+def lose():
+    print("loooooooooooooooooooooooose")
+
+
+def win(main):
+    print("Wiiiiiiiiiiiiiiiiiiiiiiiiiiiin")
+
+    # canvas = Canvas(main,width=300, height=200, bg='yellow')
+    # # pack the canvas into a frame/form
+    # canvas.pack(expand=YES, fill=BOTH)
+    # # load the .gif image file
+    # # put in your own gif file here, may need to add full path
+    # # like 'C:/WINDOWS/Help/Tours/WindowsMediaPlayer/Img/mplogo.gif'
+    # gif1 = PhotoImage(file=r'C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\XfQB.gif')
+    # # put gif image on canvas
+    # # pic's upper left corner (NW) on the canvas is at x=50 y=10
+    # canvas.create_image(50, 10, image=gif1, anchor=NW)
+    # canvas.pack()
+
+    # frames = [PhotoImage(file=r'C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\XfQB.gif', format='gif -index %i' % (i)) for i in range(100)]
+    #
+    # def update(ind):
+    #     frame = frames[ind]
+    #     ind += 1
+    #     label.configure(image=frame)
+    #     main.after(100, update, ind)
+    #
+    # label = Label(main)
+    # label.pack()
+    # main.after(0, update, 0)
+    answer = tk.messagebox.askquestion("Congratulations",
+                                            "You won this game " +
+                                            "Do you want to play again?")
+
+    if answer == 'yes':
+        main.destroy()
+        startFunc()
+    else:
+        main.destroy()
+
+
 def isInWord(x, word, main):
     global game_level
     global letters
+    global remain_letters
     j = 0
-    if game_level < 7:
+
+    print(game_level, "game_level")
+    if game_level >= 7:
+        lose()
+    elif game_level < 7:
 
         if x in word:
 
@@ -142,13 +192,30 @@ def isInWord(x, word, main):
             for i in buttons:
                 if i['text'] == x:
                     i.config(bg='tomato', state=DISABLED, fg='black')
+    remain_letters = len(word)
+    print(remain_letters, 'len')
+    for i in letters:
+        if i["text"] != "":
+            remain_letters -= 1
+            print(i["text"], '-')
+
+    if remain_letters == 0:
+        print("You won")
+        win(main)
+
+    print(remain_letters, 'remain')
 
 
 top = Tk()
 
 
+
 def startFunc():
-    top.destroy()
+    try:
+        top.destroy()
+    except:
+        pass
+
     global rangepage
     rangepage = Tk()
     C = Canvas(rangepage, bg="blue", height=800, width=1360)
