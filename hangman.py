@@ -1,12 +1,10 @@
+import os
 import random
-import time
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import *
 
 import pygame
-import pyglet
-
 from PIL import Image
 from PIL import ImageTk
 
@@ -31,6 +29,8 @@ def hardgame():
 def paint_hangman(game_level, main):
     global photoImg
     global word
+    global hangman_word
+    # global main1
 
     width = 200
     height = 400
@@ -51,8 +51,11 @@ def paint_hangman(game_level, main):
     i = 0
     for letter in word:
         letters.append(Label(hangman_word, borderwidth=5, bg="khaki3", relief="raised"))
+
         letters[i].pack(side=LEFT, fill=BOTH, expand=1, anchor=W, padx=2)
+
         letters[i].config(width=5, height=5)
+
         i += 1
 
     hangman_word.place(x=500, y=300)
@@ -71,7 +74,6 @@ def paint_hangman(game_level, main):
     else:
         var.set("Game over!")
         lose(main)
-        # ask do you want to play again?
 
 
 def game(range):
@@ -84,6 +86,8 @@ def game(range):
                  "Flabbergasted"]
 
     global word
+    # global main1
+
     if range == "easy":
         word = random.choice(easywords)
 
@@ -97,6 +101,7 @@ def game(range):
 
     rangepage.destroy()
     print("hellllo")
+
     main = Tk()
 
     C = Canvas(main, bg="blue", height=800, width=1360)
@@ -107,7 +112,6 @@ def game(range):
     alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
                 'v', 'w', 'x', 'y', 'z']
 
-
     global buttons
     keybored = Label(main)
     i = 0
@@ -116,7 +120,7 @@ def game(range):
     # l1.pack()
     for item in alphabet:
         buttons.append(Button(keybored, text=item, font='helv36', bg='khaki1', relief="raised",
-                              command=lambda x=item: isInWord(x, word, main)))
+                              command=lambda x=item: isInWord(x, main)))
 
         buttons[i].pack(side=LEFT, fill=BOTH, expand=1, anchor=W, padx=2)
         buttons[i].config(justify=LEFT)
@@ -133,13 +137,23 @@ def game(range):
 def lose(main):
     print("loooooooooooooooooooooooose")
     global word
-
-    statment = "The word was: " + word+"\n"
+    global game_level
+    # global main1
+    statment = "The word was: " + word + "\n"
     answer = tk.messagebox.askquestion("Game over!\n",
-                                       statment+
+                                       statment +
                                        "Do you want to play again?")
     if answer == 'yes':
-        main.destroy()
+        try:
+            main.destroy()
+            os.system('rm *.pyc')
+            os.system('python hangman.py')
+
+
+        except:
+            pass
+        # main.destroy()
+        game_level = 1
         startFunc()
     else:
         main.destroy()
@@ -147,22 +161,33 @@ def lose(main):
 
 def win(main):
     print("Wiiiiiiiiiiiiiiiiiiiiiiiiiiiin")
-
+    global game_level
     answer = tk.messagebox.askquestion("Congratulations",
                                        "You won this game. " +
                                        "Do you want to play again?")
-
+    # global main1
     if answer == 'yes':
-        main.destroy()
-        startFunc()
+
+        try:
+            main.destroy()
+            os.system('rm *.pyc')
+            os.system('python hangman.py')
+
+
+        except:
+            pass
     else:
         main.destroy()
 
 
-def isInWord(x, word, main):
+def isInWord(x, main):
     global game_level
     global letters
     global remain_letters
+    global word
+    main.update()
+
+    # global main1
     j = 0
 
     print(game_level, "game_level")
@@ -185,20 +210,17 @@ def isInWord(x, word, main):
             print(game_level)
             paint_hangman(game_level, main)
             for i in buttons:
-                try:
-                    if i['text'] == x:
-                        i.config(bg='tomato', state=DISABLED, fg='black')
-                except:
-                    pass
+
+                if i['text'] == x:
+                    i.config(bg='tomato', state=DISABLED, fg='black')
+
     remain_letters = len(word)
     print(remain_letters, 'len')
     for i in letters:
-        try:
-            if i["text"] != "":
-                remain_letters -= 1
-                print(i["text"], '-')
-        except:
-            pass
+
+        if i["text"] != "":
+            remain_letters -= 1
+            print(i["text"], '-')
 
     if remain_letters == 0:
         print("You won")
@@ -207,18 +229,16 @@ def isInWord(x, word, main):
     print(remain_letters, 'remain')
 
 
-
-
-
 def startFunc():
     try:
         top.destroy()
+
     except:
         pass
 
     global rangepage
     rangepage = Tk()
-    C = Canvas(rangepage, bg="blue", height=800, width=1360)
+    C1 = Canvas(rangepage, bg="blue", height=800, width=1360)
     filename = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\welcome.png")
     background_label = Label(rangepage, image=filename)
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -241,12 +261,13 @@ def startFunc():
     but3.place(relx=0.4, rely=0.55)
     but4.place(relx=0.4, rely=0.68)
     but5.place(relx=0.4, rely=0.81)
-    C.pack()
+    C1.pack()
     rangepage.mainloop()
 
 
 def exitFunc():
     top.destroy()
+
 
 top = Tk()
 C = Canvas(top, bg="blue", height=800, width=1360)
@@ -270,7 +291,6 @@ pygame.mixer.music.load(r"C:\Users\hp\Documents\Python Course\Hangman\music.mp3"
 
 pygame.mixer.music.play()
 
-time.sleep(10)
 but1.place(relx=0.25, rely=0.7)
 but2.place(relx=0.55, rely=0.7)
 C.pack()
