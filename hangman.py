@@ -34,7 +34,7 @@ def paint_hangman(game_level, main):
 
     width = 200
     height = 400
-    address = r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\\" + str(game_level) + ".png"
+    address = r"HangmanPhotos\\" + str(game_level) + ".png"
     img = Image.open(address)
     img = img.resize((width, height), Image.ANTIALIAS)
     photoImg = ImageTk.PhotoImage(img)
@@ -105,7 +105,7 @@ def game(range):
     main = Tk()
 
     C = Canvas(main, bg="blue", height=800, width=1360)
-    gamephoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\main.png")
+    gamephoto = PhotoImage(file=r"HangmanPhotos/main.png")
     background_label = Label(main, image=gamephoto)
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -239,21 +239,21 @@ def startFunc():
     global rangepage
     rangepage = Tk()
     C1 = Canvas(rangepage, bg="blue", height=800, width=1360)
-    filename = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\welcome.png")
+    filename = PhotoImage(file=r"HangmanPhotos\welcome.png")
     background_label = Label(rangepage, image=filename)
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-    easyphoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\easy.png")
+    easyphoto = PhotoImage(file=r"HangmanPhotos\easy.png")
     easy = easyphoto.subsample(1, 1)
     but3 = tk.Button(rangepage, text="Easy", image=easy, borderwidth=10, command=easygame)
     but3.config(width=200, height=50)
 
-    normalphoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\normal.png")
+    normalphoto = PhotoImage(file=r"HangmanPhotos\normal.png")
     normal = normalphoto.subsample(1, 1)
     but4 = tk.Button(rangepage, text="Normal", image=normal, borderwidth=10, command=normalgame)
     but4.config(width=200, height=50)
 
-    hardphoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\hard.png")
+    hardphoto = PhotoImage(file=r"HangmanPhotos\hard.png")
     hard = hardphoto.subsample(1, 1)
     but5 = tk.Button(rangepage, text="Hard", image=hard, borderwidth=10, command=hardgame)
     but5.config(width=200, height=50)
@@ -271,23 +271,23 @@ def exitFunc():
 
 top = Tk()
 C = Canvas(top, bg="blue", height=800, width=1360)
-filename = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\welcome.png")
+filename = PhotoImage(file=r"HangmanPhotos\welcome.png")
 background_label = Label(top, image=filename)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-playphoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\P1.png")
+playphoto = PhotoImage(file=r"HangmanPhotos\P1.png")
 play = playphoto.subsample(1, 1)
 but1 = tk.Button(top, text="Play", image=play, borderwidth=10, command=startFunc)
 but1.config(width=200, height=50)
 
-exitphoto = PhotoImage(file=r"C:\Users\hp\Documents\Python Course\Hangman\HangmanPhotos\E1.png")
+exitphoto = PhotoImage(file=r"HangmanPhotos\E1.png")
 exit = exitphoto.subsample(1, 1)
 but2 = tk.Button(top, text="Exit", image=exit, borderwidth=10, command=exitFunc)
 but2.config(width=200, height=50)
 
 pygame.init()
 
-pygame.mixer.music.load(r"C:\Users\hp\Documents\Python Course\Hangman\music.mp3")
+pygame.mixer.music.load(r"music.mp3")
 
 pygame.mixer.music.play()
 
